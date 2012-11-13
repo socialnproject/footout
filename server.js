@@ -35,8 +35,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new FacebookStrategy({
-    clientID: '517708631573537',
-    clientSecret: '2b7ce9c976186d211b1cc27ab26ed775',
+    clientID: '307407332706112',
+    clientSecret: '48fa64d74c4b18cbc3598fd95fc57943',
     //callbackURL: "http://footout.diogofscmariano.c9.io/auth/facebook/callback"
     callbackURL: "http://footout.herokuapp.com/auth/facebook/callback"
   },
