@@ -117,8 +117,13 @@ exports.addPlayer = function(req, res) {
    MatchModel.findById(req.params.id, function(err, match){
     
         var player = new PlayerModel({ id: req.user._id });
+        
+        var players = match.players();
+        
+        console.log('players');
         match.players.append(player)
-    
+        
+        
         match.save(function(err){          
             if(!err){
                 console.log("player join match");
