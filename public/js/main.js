@@ -3,9 +3,9 @@ var AppRouter = Backbone.Router.extend({
     routes: {
         ""                  	: "home",
         "about"             	: "about",
-	"friends"	    	: "friendsList",
-	"friends/page/:page"	: "friendsList",
-	"matches"		: "matchlist",
+	    "friends"	    	    : "friendsList",
+	    "friends/page/:page"	: "friendsList",
+	    "matches"		        : "matchlist",
         "matches/page/:page"	: "matchlist",
         "matches/add"         	: "addMatch",
         "matches/:id"        	: "matchDetails"
