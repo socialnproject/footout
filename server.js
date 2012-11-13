@@ -37,7 +37,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: '381159648625726',
     clientSecret: '9feeaf42979e3bee005d49fc2bf3c4b7',
-    callbackURL: "http://footout.diogofscmariano.c9.io/auth/facebook/callback"
+    //callbackURL: "http://footout.diogofscmariano.c9.io/auth/facebook/callback"
+    callbackURL: "http://footout.herokuapp.com/auth/facebook/callback"
   },
   
   function(accessToken, refreshToken, profile, done) {
