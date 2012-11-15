@@ -12,7 +12,9 @@ var Match = new Schema({
     time: {type: String, required:true},
     local: {type: String, required:true},
     localDetail: {type: String, required:true},
+    maxPlayerNumber: {type: String, required:true},
     pricePerPerson: {type: String, required:true},
+    owner: {type: String, required:true},
     description: {type: String},
     players: [Player]
 });
@@ -77,6 +79,8 @@ exports.updateMatch = function(req, res) {
         match.local =  req.body.local;
         match.localDetail =  req.body.localDetail;
         match.pricePerPerson =  req.body.pricePerPerson;
+        match.owner = "req.body.pricePerPerson";//"sdsdfsf";//req.user._id;
+        match.maxPlayerNumber = req.body.maxPlayerNumber; 
         match.description =  req.body.description;
         match.players = req.body.players;
         
@@ -118,9 +122,6 @@ exports.addPlayer = function(req, res) {
     
         var player = new PlayerModel({ id: req.user._id });
         
-        var players = match.players();
-        
-        console.log('players');
         match.players.append(player)
         
         

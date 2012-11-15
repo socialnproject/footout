@@ -15,31 +15,27 @@ window.Match = Backbone.Model.extend({
         localDetail: "",
         date: "",
         time: "",
+        maxPlayerNumber: "10",
         description: "",
         pricePerPerson: "10,00",
         owner: "Pedro Vala",
         players: false
 
     }
-    
+
     ,
     
     addPlayer: function(player){
         
         var players = this.get('players'), alreadyexists = false;
-        console.log(player);
         
-        for (var key in players)
-            if (player == key){
-                alreadyexists = true;
-                break;
-            }
-            
-        if(alreadyexists === false)
+        console.log(this.defaults.maxPlayerNumber);
+
+        if(players.length < this.get('maxPlayerNumber') && players.indexOf(player) > -1){
             players.push(player);
+            this.trigger("change:players", this, players);
+        }
         
-        
-        this.trigger("change:players", this, players);
     }
     
 });

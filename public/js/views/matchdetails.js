@@ -13,6 +13,17 @@ window.MatchView = Backbone.View.extend({
          
         var len = players.length;
         
+        console.log("Owner Id: "+this.model.get('owner'));
+        console.log("Player Id: "+this.options.player.get('_id'));
+        if(1==1/*this.model.get('owner')==this.options.player.get('_id')*/){
+            $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary save">Save</a>');
+            $('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
+        }
+        
+        if(len < this.model.get('maxPlayerNumber') && players.indexOf(this.options.player) > -1){
+            $('#match-buttons', this.el).append('<a href="#" class="btn join">Join</a>');
+        }
+        
         for (var i = 0; i < len; i++) {
             $('.thumbnails', this.el).append(new PlayerListItemView({model: new Player(players[i])}).render().el);
         }
