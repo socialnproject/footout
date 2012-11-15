@@ -13,8 +13,8 @@ window.MatchView = Backbone.View.extend({
          
         var len = players.length;
         
-        console.log("Owner Id: "+this.model.get('owner'));
-        console.log("Player Id: "+this.options.player.get('_id'));
+        /*console.log("Owner Id: "+this.model.get('owner'));
+        console.log("Player Id: "+this.options.player.get('_id'));*/
         if(1==1/*this.model.get('owner')==this.options.player.get('_id')*/){
             $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary save">Save</a>');
             $('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
