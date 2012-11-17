@@ -18,23 +18,22 @@ window.Match = Backbone.Model.extend({
         maxPlayerNumber: "10",
         description: "",
         pricePerPerson: "10,00",
-        owner: "Pedro Vala",
+        owner: "",
         players: false
-
     }
 
     ,
     
     addPlayer: function(player){
         
-        var players = this.get('players'), alreadyexists = false;
+        var players = this.get('players');
         
         console.log(this.defaults.maxPlayerNumber);
 
-        if(players.length < this.get('maxPlayerNumber') && players.indexOf(player) > -1){
+     //   if(players.length < this.get('maxPlayerNumber') && players.indexOf(player) > -1){
             players.push(player);
             this.trigger("change:players", this, players);
-        }
+      //  }
         
     }
     

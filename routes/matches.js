@@ -7,16 +7,18 @@ mongoose.connect('mongodb://foot:murro@alex.mongohq.com:10058/footout');
 
 
 var Match = new Schema({
-    name: {type: String, required:true},
-    date: {type: String, required:true},
-    time: {type: String, required:true},
-    local: {type: String, required:true},
-    localDetail: {type: String, required:true},
-    maxPlayerNumber: {type: String, required:true},
-    pricePerPerson: {type: String, required:true},
-    owner: {type: String, required:true},
-    description: {type: String},
-    players: [Player]
+    name:               {type: String, required:true},
+    date:               {type: String, required:true},
+    time:               {type: String, required:true},
+    local:              {type: String, required:true},
+    localDetail:        {type: String, required:true},
+  //  maxPlayerNumber:    {type: String, required:true},
+    pricePerPerson:     {type: String, required:true},
+    owner:              {type: String},
+    description:        {type: String},
+    players:            [Player],
+//    creationDate:       {type: Date, default: Date.now},
+//    lastUpdateDate:     {type: Date}
 });
 
 var Player = new Schema({
@@ -73,16 +75,17 @@ exports.addMatch = function(req, res) {
 
 exports.updateMatch = function(req, res) {
     MatchModel.findById(req.params.id, function(err, match){
-        match.name =  req.body.name;
-        match.date =  req.body.date;
-        match.time =  req.body.time;
-        match.local =  req.body.local;
-        match.localDetail =  req.body.localDetail;
+        match.name =            req.body.name;
+        match.date =            req.body.date;
+        match.time =            req.body.time;
+        match.local =           req.body.local;
+        match.localDetail =     req.body.localDetail;
         match.pricePerPerson =  req.body.pricePerPerson;
-        match.owner = "req.body.pricePerPerson";//"sdsdfsf";//req.user._id;
-        match.maxPlayerNumber = req.body.maxPlayerNumber; 
-        match.description =  req.body.description;
-        match.players = req.body.players;
+        match.owner =           req.user._id;
+  //      match.maxPlayerNumber = req.body.maxPlayerNumber; 
+        match.description =     req.body.description;
+        match.players =         req.body.players;
+    //    match.lastUpdateDate =  new Date;
         
         match.save(function(err){
             if(!err){

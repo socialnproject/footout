@@ -12,8 +12,9 @@ window.MatchView = Backbone.View.extend({
         var players = this.model.get('players');
          
         var len = players.length;
-        
-        /*console.log("Owner Id: "+this.model.get('owner'));
+        console.log("Owner Id: "+this.model.get('owner'));
+        /*
+        console.log("Owner Id: "+this.model.get('owner'));
         console.log("Player Id: "+this.options.player.get('_id'));*/
         if(1==1/*this.model.get('owner')==this.options.player.get('_id')*/){
             $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary save">Save</a>');
@@ -33,6 +34,7 @@ window.MatchView = Backbone.View.extend({
     
     events: {
         "change"        : "change",
+        "click .create" : "beforeCreate",
         "click .save"   : "beforeSave",
         "click .delete" : "deleteMatch",
         "click .join"   : "beforeJoin"
@@ -49,6 +51,11 @@ window.MatchView = Backbone.View.extend({
         this.model.set(change);
     },
 
+    beforeCreate: function () {
+        this.saveMatch();
+        return false;
+    },
+    
     beforeSave: function () {
         var self = this;
         this.saveMatch();
