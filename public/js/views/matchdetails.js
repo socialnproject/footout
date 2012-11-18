@@ -10,21 +10,45 @@ window.MatchView = Backbone.View.extend({
         $('#playerslist', this.el).append('<ul class="thumbnails"></ul>');
         
         var players = this.model.get('players');
-         
         var len = players.length;
+        var player_index = -1;
+        
+        for (var i = 0; i < len; i++)
+            if(players[i]._id == this.options.player.get('_id')){
+                player_index = i;
+                break;
+            }
         //console.log("Owner Id: "+this.model.get('owner'));
-        console.log(window.location.hash);
-        /*
-        console.log("Owner Id: "+this.model.get('owner'));
-        console.log("Player Id: "+this.options.player.get('_id'));*/
-        if(1==1/*this.model.get('owner')==this.options.player.get('_id')*/){
-            $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary save">Save</a>');
-            $('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
+        
+        //Match creation
+        if(window.location.hash=="#matches/add"){
+            $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary create">Create</a>');
         }
         
-        if(len < this.model.get('maxPlayerNumber') && players.indexOf(this.options.player) > -1){
-            $('#match-buttons', this.el).append('<a href="#" class="btn join">Join</a>');
-        }
+        //Match View
+        else{
+            console.log(this.model);
+            /*console.log("Owner Id: "+this.model.get('owner'));
+            console.log("Player Id: "+this.options.player.get('_id'));
+            */
+        
+            /*console.log("Owner Id: "+this.model.get('owner'));
+            console.log("Player Id: "+this.options.player.get('_id'));*/
+            if(this.model.get('owner')==this.options.player.get('_id')){
+                $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary save">Save</a>');
+                $('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
+            }
+            
+            if(len < this.model.get('maxPlayerNumber') && player_index < 0){
+                $('#match-paticipation-buttons', this.el).append('<a href="#" class="btn join">Join</a>');
+            }
+            
+            if(player_index > -1){
+                $('#match-paticipation-buttons', this.el).append('<a href="#" class="btn leave">Leave</a>');
+            }   
+        }            
+            
+
         
         for (var i = 0; i < len; i++) {
             $('.thumbnails', this.el).append(new PlayerListItemView({model: new Player(players[i])}).render().el);
@@ -38,7 +62,8 @@ window.MatchView = Backbone.View.extend({
         "click .create" : "beforeCreate",
         "click .save"   : "beforeSave",
         "click .delete" : "deleteMatch",
-        "click .join"   : "beforeJoin"
+        "click .join"   : "beforeJoin",
+        "click .leave"  : "beforeLeave"
     },
 
     change: function (event) {
@@ -53,8 +78,21 @@ window.MatchView = Backbone.View.extend({
     },
 
     beforeCreate: function () {
-        this.saveMatch();
+        this.createMatch();
         return false;
+    },
+    
+    createMatch: function () {
+        console.log('before create');
+        this.model.save(null, {
+            success: function (model) {
+                app.navigate('match/' + model.id, false);
+                utils.showAlert('Success!', 'Match created successfully', 'alert-success');
+            },
+            error: function () {
+                utils.showAlert('Error', 'An error occurred while trying to create this item', 'alert-error');
+            }
+        });
     },
     
     beforeSave: function () {
@@ -64,7 +102,6 @@ window.MatchView = Backbone.View.extend({
     },
 
     saveMatch: function () {
-        var self = this;
         console.log('before save');
         this.model.save(null, {
             success: function (model) {
@@ -73,7 +110,7 @@ window.MatchView = Backbone.View.extend({
                 utils.showAlert('Success!', 'Match saved successfully', 'alert-success');
             },
             error: function () {
-                utils.showAlert('Error', 'An error occurred while trying to delete this item', 'alert-error');
+                utils.showAlert('Error', 'An error occurred while trying to save this item', 'alert-error');
             }
         });
     },
@@ -102,6 +139,30 @@ window.MatchView = Backbone.View.extend({
         });
     },
 
+    beforeLeave: function () {
+        var self = this;
+        this.leaveMatch();
+        return false;
+    },
+    
+    leaveMatch: function () {
+        var self = this;
+        console.log('before leave');
+
+        this.model.removePlayer(this.options.player);
+   
+        this.model.save(null, {
+            success: function (model) {
+                self.render();
+                app.navigate('match/' + model.id, false);
+                utils.showAlert('Success!', 'Player left successfully', 'alert-success');
+            },
+            error: function () {
+                utils.showAlert('Error', 'An error occurred while trying to leave this item', 'alert-error');
+            }
+        });
+    },
+    
     deleteMatch: function () {
         this.model.destroy({
             success: function () {

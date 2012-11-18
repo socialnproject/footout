@@ -55,7 +55,7 @@ exports.findAll = function(req, res) {
 };
 
 exports.addMatch = function(req, res) {
- 
+ console.log("toma la");
   var match; 
   console.log(req.body);
   match = new MatchModel(req.body);  //change this to descriminate items
@@ -125,8 +125,32 @@ exports.addPlayer = function(req, res) {
     
         var player = new PlayerModel({ id: req.user._id });
         
-        match.players.append(player)
+        match.players.append(player);
         
+        
+        match.save(function(err){          
+            if(!err){
+                console.log("player join match");
+            }
+            else {
+                console.log('err');
+            }
+        });
+        
+        return res.send(match);
+   });
+
+}
+
+exports.removePlayer = function(req, res) {
+   
+   console.log("remove player");
+   
+   MatchModel.findById(req.params.id, function(err, match){
+    
+        var player = new PlayerModel({ id: req.user._id });
+        
+        match.players.splice(match.players.indexOf(player), 1);        
         
         match.save(function(err){          
             if(!err){

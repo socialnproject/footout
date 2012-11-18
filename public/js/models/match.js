@@ -37,6 +37,21 @@ window.Match = Backbone.Model.extend({
         
     }
     
+    ,
+    
+    removePlayer: function(player){
+        
+        var players = this.get('players');
+        
+        console.log(this.defaults.maxPlayerNumber);
+
+     //   if(players.length < this.get('maxPlayerNumber') && players.indexOf(player) > -1){
+            players.splice(players.indexOf(player), 1);
+            this.trigger("change:players", this, players);
+      //  }
+        
+    }
+    
 });
 
 window.MatchCollection = Backbone.Collection.extend({
