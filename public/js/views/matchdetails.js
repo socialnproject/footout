@@ -12,7 +12,8 @@ window.MatchView = Backbone.View.extend({
         var players = this.model.get('players');
          
         var len = players.length;
-        console.log("Owner Id: "+this.model.get('owner'));
+        //console.log("Owner Id: "+this.model.get('owner'));
+        console.log(window.location.hash);
         /*
         console.log("Owner Id: "+this.model.get('owner'));
         console.log("Player Id: "+this.options.player.get('_id'));*/
