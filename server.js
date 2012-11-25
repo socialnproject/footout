@@ -2,8 +2,9 @@ var express = require('express'),
     path = require('path'),
     http = require('http'),
     match = require('./routes/matches'),
-    graph = require('fbgraph'),
     UserManager = require('./routes/user');
+    
+var config =  require('./config');
     
 var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy;
@@ -35,20 +36,19 @@ passport.deserializeUser(function(obj, done) {
 });
 
 /*PROD*/
-passport.use(new FacebookStrategy({
+/*passport.use(new FacebookStrategy({
     clientID: '307407332706112',
     clientSecret: '48fa64d74c4b18cbc3598fd95fc57943',
     callbackURL: "http://footout.herokuapp.com/auth/facebook/callback"
   },
-
-/*DEV*/
-/*
-passport.use(new FacebookStrategy({
-    clientID: '389187654490254',
-    clientSecret: '21a1c449a0be1d60bfb98a1dd4d62cc6',
-    callbackURL: "http://footout.andrelouca.c9.io/auth/facebook/callback"
-  },
 */
+/*DEV*/
+
+passport.use(new FacebookStrategy({
+    clientID: config.facebook.clientID,
+    clientSecret: config.facebook.clientSecret,
+    callbackURL: config.facebook.callbackURL
+  },
   
   
   function(accessToken, refreshToken, profile, done) {
