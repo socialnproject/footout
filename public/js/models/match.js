@@ -13,12 +13,17 @@ window.Match = Backbone.Model.extend({
         name: "",
         local: "Portugal",
         localDetail: "",
-        date: "",
-        time: "",
+        
+        date_day: 12,
+        date_month: 2,
+        date_year: 2012,
+        
+        time_hour: 0,
+        time_minutes: 30,
+        
         maxPlayerNumber: "10",
         description: "",
         pricePerPerson: "10,00",
-        owner: "",
         players: false
     }
 

@@ -7,8 +7,9 @@ window.MatchListView = Backbone.View.extend({
     render: function () {
         var matches = this.model.models;
         var len = matches.length;
-        var startPos = (this.options.page - 1) * 8;
-        var endPos = Math.min(startPos + 8, len);
+        var matchesperpage = 100;
+        var startPos = (this.options.page - 1) * matchesperpage;
+        var endPos = Math.min(startPos + matchesperpage, len);
 
         $(this.el).html('<ul class="thumbnails"></ul>');
 

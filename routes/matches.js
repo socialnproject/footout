@@ -6,20 +6,20 @@ var Schema = mongoose.Schema;
 mongoose.connect('mongodb://foot:murro@alex.mongohq.com:10058/footout');
 
 
-var Match = new Schema({
-    name:               {type: String, required:true},
-    date:               {type: String, required:true},
-    time:               {type: String, required:true},
-    local:              {type: String, required:true},
-    localDetail:        {type: String, required:true},
-  //  maxPlayerNumber:    {type: String, required:true},
+var Match = new Schema( {
+    name:               {type: String, required:true, trim: true},
+    date:               {type: Date, required:true},
+    local:              {type: String, required:true, trim: true},
+    localDetail:        {type: String, required:true, trim: true},
+    maxPlayerNumber:    {type: String, required:true},
     pricePerPerson:     {type: String, required:true},
-    owner:              {type: String},
-    description:        {type: String},
+    description:        {type: String, required:false, trim: true },
+    owner:              {type: String, required:true},
     players:            [Player],
-//    creationDate:       {type: Date, default: Date.now},
-//    lastUpdateDate:     {type: Date}
+    lastUpdate:         {type: Date, default: Date.now},
+    creation:           {type: Date, required:true}
 });
+
 
 var Player = new Schema({
     id: {type: String},
@@ -55,11 +55,19 @@ exports.findAll = function(req, res) {
 };
 
 exports.addMatch = function(req, res) {
- console.log("toma la");
+
   var match; 
   console.log(req.body);
-  match = new MatchModel(req.body);  //change this to descriminate items
-  
+  match = new MatchModel();  //change this to descriminate items
+  match.name =            req.body.name;
+  match.date =            new Date(req.body.date_year, req.body.date_month+1, req.body.date_day, req.body.time_hour, req.body.time_minutes, 0, 0);
+  match.local =           req.body.local;
+  match.localDetail =     req.body.localDetail;
+  match.pricePerPerson =  req.body.pricePerPerson;
+  match.maxPlayerNumber = req.body.maxPlayerNumber; 
+  match.description =     req.body.description;
+  match.owner = req.user._id;
+  match.creation = new Date();
   match.players = [{ id: req.user._id, name: req.user.name, fbid: req.user.fbid }];
   
   match.save(function (err, matches){       
@@ -76,16 +84,14 @@ exports.addMatch = function(req, res) {
 exports.updateMatch = function(req, res) {
     MatchModel.findById(req.params.id, function(err, match){
         match.name =            req.body.name;
-        match.date =            req.body.date;
-        match.time =            req.body.time;
+        match.date =            new Date(req.body.date_year, req.body.date_month+1, req.body.date_day, req.body.time_hour, req.body.time_minutes, 0, 0);
         match.local =           req.body.local;
         match.localDetail =     req.body.localDetail;
         match.pricePerPerson =  req.body.pricePerPerson;
-        match.owner =           req.user._id;
-  //      match.maxPlayerNumber = req.body.maxPlayerNumber; 
+        match.maxPlayerNumber = req.body.maxPlayerNumber; 
         match.description =     req.body.description;
         match.players =         req.body.players;
-    //    match.lastUpdateDate =  new Date;
+        
         
         match.save(function(err){
             if(!err){
@@ -99,6 +105,8 @@ exports.updateMatch = function(req, res) {
         return res.send(match);
     });
 }
+
+
 
 exports.deleteMatch = function(req, res) {
    
@@ -121,7 +129,7 @@ exports.addPlayer = function(req, res) {
    
    console.log("add player");
    
-   MatchModel.findById(req.params.id, function(err, match){
+        MatchModel.findById(req.params.id, function(err, match){
     
         var player = new PlayerModel({ id: req.user._id });
         

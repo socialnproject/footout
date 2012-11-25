@@ -8,7 +8,8 @@ var AppRouter = Backbone.Router.extend({
 	    "matches"		        : "matchlist",
         "matches/page/:page"	: "matchlist",
         "matches/add"         	: "addMatch",
-        "matches/:id"        	: "matchDetails"
+        "matches/:id"           : "matchDetailsView",
+        "matches/edit/:id"      : "matchDetailsEdit"
     },
 
     initialize: function () {
@@ -51,7 +52,7 @@ var AppRouter = Backbone.Router.extend({
     },
     
     
-    matchDetails: function (id) {
+    matchDetailsView: function (id) {
 	
 	$('.header').show();
 	
@@ -66,13 +67,35 @@ var AppRouter = Backbone.Router.extend({
 	
         this.headerView.selectMenuItem();
     },
+    
+    matchDetailsEdit: function (id) {
+    
+	    $('.header').show();
+	
+        var match = new Match({_id: id});
+	
+	    var p = new Player();
+	    p.fetch();
+	
+	    match.fetch(
+            {success: function(){
+		        $("#content").html(new MatchEdit({model: match, player:p}).el);
+                },
+             error: function(){
+                  utils.showAlert('Error', 'An error occurred while trying to save this item', 'alert-error');
+             }
+            });
+	
+        this.headerView.selectMenuItem();
+    },
+    
 
     addMatch: function() {
 	
 	$('.header').show();
 	
         var match = new Match();
-        $('#content').html(new MatchView({model: match}).el);
+        $('#content').html(new MatchEdit({model: match}).el);
         this.headerView.selectMenuItem('add-menu');
 	},
 
@@ -89,7 +112,7 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-utils.loadTemplate(['HomeView','HeaderView', 'MatchView','PlayerListItemView',
+utils.loadTemplate(['HomeView','HeaderView', 'MatchView', 'MatchEdit','PlayerListItemView',
 		    'AboutView', 'MatchListItemView'], function() {
     app = new AppRouter();
     Backbone.history.start();
