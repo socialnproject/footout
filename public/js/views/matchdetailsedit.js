@@ -1,113 +1,258 @@
-var express = require('express'),
-    path = require('path'),
-    http = require('http'),
-    match = require('./routes/matches'),
-    graph = require('fbgraph'),
-    UserManager = require('./routes/user');
+window.MatchEdit = Backbone.View.extend({
+
+
+    initialize: function () {
+        this.render();
+    },
+
+
+    render: function () {
+        $(this.el).html(this.template(this.model.toJSON()));
+
+        //Match creation
+        if(window.location.hash=="#matches/add"){
+            $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary create">Create</a>');
+        }
+
+
+        //Match Edit
+
+
+        else{
+
+
+               $('#playerslist', this.el).append('<ul class="thumbnails"></ul>');
+
+
+                
+                var players = this.model.get('players');
+
+
+                var len = players.length;
+
+
+                var player_index = -1;
+
+
+                
+                for (var i = 0; i < len; i++)
+
+
+                    if(players[i]._id == this.options.player.get('_id')){
+
+
+                        player_index = i;
+
+
+                        break;
+
+
+                    }
+
+
+        
+            console.log(this.model);
+
+
+         
+            if(this.model.get('owner')==this.options.player.get('_id')){
+
+
+                $('#match-buttons', this.el).append('<a href="#" class="btn save">Save</a>');
+
+
+                $('#match-buttons', this.el).append('<a href="#matches/'+ this.model.get('_id') +'" class="btn">Cancel</a>');
+
+
+                $('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
+
+
+            }
+
+
+        
+        }
+
+
+        return this;
+
+
+    },
+
+
     
-var passport = require('passport')
-  , FacebookStrategy = require('passport-facebook').Strategy;
-
-var app = express();
-
-app.configure(function () {
-    app.set('port', process.env.PORT || 3000);
-    app.use(express.logger('dev'));  /* 'default', 'short', 'tiny', 'dev' */
-    app.use(express.cookieParser());
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(express.session({ secret: 'keyboard cat' }));
-    // Initialize Passport! Also use passport.session() middleware, to support
-    // persistent login sessions (recommended).
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
-});
+    events: {
 
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
+        "change"        : "change",
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
 
-/*PROD*/
-passport.use(new FacebookStrategy({
-    clientID: '307407332706112',
-    clientSecret: '48fa64d74c4b18cbc3598fd95fc57943',
-    callbackURL: "http://footout.herokuapp.com/auth/facebook/callback"
-  },
+        "click .save"   : "beforeSave",
 
-/*DEV*/
-/*
-passport.use(new FacebookStrategy({
-    clientID: '389187654490254',
-    clientSecret: '21a1c449a0be1d60bfb98a1dd4d62cc6',
-    callbackURL: "http://footout.andrelouca.c9.io/auth/facebook/callback"
-  },
-*/
-  
-  
-  function(accessToken, refreshToken, profile, done) {
-      console.log(profile);
-      
-      UserManager.findOrCreate(profile.displayName, 'teste@teste.com', profile.id, function(err, user){
-        return done(err, user);
-      });
+
+        "click .create" : "beforeCreate",
+
+
+        "click .delete" : "deleteWine"
+
+
+    },
+
+
+
+    change: function (event) {
+
+
+        // Remove any existing alert message
+
+
+        utils.hideAlert();
+
+
+
+        // Apply the change to the model
+
+
+        var target = event.target;
+
+
+        var change = {};
+
+
+        change[target.name] = target.value;
+
+
+        this.model.set(change);
+
+
+    },
+
+
     
-  }
-));
+    beforeCreate: function () {
 
 
-app.get('/auth/facebook',
-  passport.authenticate('facebook'),
-  function(req, res){
-    // The request will be redirected to Facebook for authentication, so
-    // this function will not be called.
-  });
-
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/#matches');
-  });
+        this.createMatch();
 
 
-app.get('/matches', ensureAuthenticated, match.findAll);
-app.get('/matches/:id', ensureAuthenticated, match.findById);
-app.post('/matches', ensureAuthenticated, match.addMatch);
-app.put('/matches/:id', ensureAuthenticated, match.updateMatch);
-app.delete('/matches/:id', ensureAuthenticated, match.deleteMatch);
+        return false;
 
-app.get('/matches/:id/players', ensureAuthenticated, match.findPlayers);
-app.put('/matches/:id/players', ensureAuthenticated, match.addPlayer);
 
-app.get('/player', ensureAuthenticated, function(req, res){
-    console.log('get player');
-    res.send({ _id: null, id: req.user._id});
+    },
+
+
+    
+    createMatch: function () {
+
+
+        console.log('before create');
+
+
+        this.model.save(null, {
+
+
+            success: function (model){
+
+
+                app.navigate('matches/' + model.id, true);
+
+
+                utils.showAlert('Success!', 'Match created successfully', 'alert-success');
+
+
+            },
+
+
+            error: function () {
+
+
+                utils.showAlert('Error', 'An error occurred while trying to create this item', 'alert-error');
+
+
+            }
+
+
+        });
+    },
+
+
+
+    beforeSave: function () {
+
+
+        this.saveMatch();
+
+
+        return false;
+
+
+    },
+
+
+    
+    saveMatch: function () {
+
+
+        console.log('before edit');
+
+
+        this.model.save(null, {
+
+
+            success: function (model) {
+
+
+              //  self.render();
+
+
+                app.navigate('matches/' + model.id, true);
+
+
+                utils.showAlert('Success!', 'Match saved successfully', 'alert-success');
+
+
+            },
+
+
+            error: function () {
+
+
+                utils.showAlert('Error', 'An error occurred while trying to save this item', 'alert-error');
+
+
+            }
+
+
+        });
+    },
+
+
+    
+    deleteWine: function () {
+
+
+        this.model.destroy({
+
+
+            success: function () {
+
+
+                alert('Wine deleted successfully');
+
+
+                app.navigate('matches', true);
+
+
+            }
+
+
+        });
+        return false;
+
+
+    }
+
+
+    
+    
 });
-
-app.get('/user', ensureAuthenticated, function(req, res){
-    console.log('get user');
-    res.send(req.user);
-});
-
-
-http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express server listening on port " + app.get('port'));
-});
-
-
-// Simple route middleware to ensure user is authenticated.
-// Use this route middleware on any resource that needs to be protected. If
-// the request is authenticated (typically via a persistent login session),
-// the request will proceed. Otherwise, the user will be redirected to the
-// login page.
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  return res.redirect('/');
-}
