@@ -1,0 +1,211 @@
+<div class="row-fluid">
+
+    <form class="form-horizontal span12">
+
+        <fieldset>
+
+            <legend>Match Details</legend>
+            <br/>
+
+            <div class="row">
+                <div class="span8">
+
+                <!--    <div class="control-group">
+                        <label for="matchId" class="control-label">Id:</label>
+
+                        <div class="controls">
+                            <input id="matchId" name="id" type="text" value="<%= _id === null ? '' : _id %>"
+                                   disabled/>
+                        </div>
+                    </div>-->
+                    
+                    <div id="match-paticipation-buttons" class="form-actions">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="name" class="control-label">Name:</label>
+
+                        <div class="controls">
+                            <input type="text" id="name" name="name" value="<%= name %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="grapes" class="control-label">Date:</label>
+
+                        <div class="controls">
+                            <select id="date_day" name="date_day">
+                                <option <%= date_day === 1 ? 'selected' : '' %> value=1 >01</option>
+                                <option <%= date_day === 2 ? 'selected' : '' %> value=2 >02</option>
+                                <option <%= date_day === 3 ? 'selected' : '' %> value=3 >03</option>
+                                <option <%= date_day === 4 ? 'selected' : '' %> value=4 >04</option>
+                                <option <%= date_day === 5 ? 'selected' : '' %> value=5 >05</option>
+                                <option <%= date_day === 6 ? 'selected' : '' %> value=6 >06</option>
+                                <option <%= date_day === 7 ? 'selected' : '' %> value=7 >07</option>
+                                <option <%= date_day === 8 ? 'selected' : '' %> value=8 >08</option>
+                                <option <%= date_day === 9 ? 'selected' : '' %> value=9 >09</option>
+                                <option <%= date_day === 10 ? 'selected' : '' %> value=10 >10</option>
+                                <option <%= date_day === 11 ? 'selected' : '' %> value=11 >11</option>
+                                <option <%= date_day === 12 ? 'selected' : '' %> value=12 >12</option>
+                                <option <%= date_day === 13 ? 'selected' : '' %> value=13 >13</option>
+                                <option <%= date_day === 14 ? 'selected' : '' %> value=14 >14</option>
+                                <option <%= date_day === 15 ? 'selected' : '' %> value=15 >15</option>
+                                <option <%= date_day === 16 ? 'selected' : '' %> value=16 >16</option>
+                                <option <%= date_day === 17 ? 'selected' : '' %> value=17 >17</option>
+                                <option <%= date_day === 18 ? 'selected' : '' %> value=18 >18</option>
+                                <option <%= date_day === 19 ? 'selected' : '' %> value=19 >19</option>
+                                <option <%= date_day === 20 ? 'selected' : '' %> value=20 >20</option>
+                                <option <%= date_day === 21 ? 'selected' : '' %> value=21 >21</option>
+                                <option <%= date_day === 22 ? 'selected' : '' %> value=22 >22</option>
+                                <option <%= date_day === 23 ? 'selected' : '' %> value=23 >23</option>
+                                <option <%= date_day === 24 ? 'selected' : '' %> value=24 >24</option>
+                                <option <%= date_day === 25 ? 'selected' : '' %> value=25 >25</option>
+                                <option <%= date_day === 26 ? 'selected' : '' %> value=26 >26</option>
+                                <option <%= date_day === 27 ? 'selected' : '' %> value=27 >27</option>
+                                <option <%= date_day === 28 ? 'selected' : '' %> value=28 >28</option>
+                                <option <%= date_day === 29 ? 'selected' : '' %> value=29 >29</option>
+                                <option <%= date_day === 30 ? 'selected' : '' %> value=30 >30</option>
+                                <option <%= date_day === 31 ? 'selected' : '' %> value=31 >31</option>
+                            </select>/
+                            <select id="date_month" name="date_month"> 
+                                <option <%= date_month === 1 ? 'selected' : '' %> value=1 >01</option>
+                                <option <%= date_month === 2 ? 'selected' : '' %> value=2 >02</option>
+                                <option <%= date_month === 3 ? 'selected' : '' %> value=3 >03</option>
+                                <option <%= date_month === 4 ? 'selected' : '' %> value=4 >04</option>
+                                <option <%= date_month === 5 ? 'selected' : '' %> value=5 >05</option>
+                                <option <%= date_month === 6 ? 'selected' : '' %> value=6 >06</option>
+                                <option <%= date_month === 7 ? 'selected' : '' %> value=7 >07</option>
+                                <option <%= date_month === 8 ? 'selected' : '' %> value=8 >08</option>
+                                <option <%= date_month === 9 ? 'selected' : '' %> value=9 >09</option>
+                                <option <%= date_month === 10 ? 'selected' : '' %> value=10 >10</option>
+                                <option <%= date_month === 11 ? 'selected' : '' %> value=11 >11</option>
+                                <option <%= date_month === 12 ? 'selected' : '' %> value=12 >12</option>
+                            </select>/
+                            <select id="date_year" name="date_year"> 
+                                <option <%= date_year === 2012 ? 'selected' : '' %> value=2012 >2012</option>
+                                <option <%= date_year === 2013 ? 'selected' : '' %> value=2013 >2013</option>
+                                <option <%= date_year === 2014 ? 'selected' : '' %> value=2014 >2014</option>
+                            </select>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+
+                     <div class="control-group">
+                        <label for="grapes" class="control-label">Time:</label>
+
+                        <div class="controls">
+                            <select id="time_hour" name="time_hour"> 
+                                <option <%= time_hour === 0 ? 'selected' : '' %> value=0 >00</option> 
+                                <option <%= time_hour === 1 ? 'selected' : '' %> value=1 >01</option>
+                                <option <%= time_hour === 2 ? 'selected' : '' %> value=2 >02</option>
+                                <option <%= time_hour === 3 ? 'selected' : '' %> value=3 >03</option>
+                                <option <%= time_hour === 4 ? 'selected' : '' %> value=4 >04</option>
+                                <option <%= time_hour === 5 ? 'selected' : '' %> value=5 >05</option>
+                                <option <%= time_hour === 6 ? 'selected' : '' %> value=6 >06</option>
+                                <option <%= time_hour === 7 ? 'selected' : '' %> value=7 >07</option>
+                                <option <%= time_hour === 8 ? 'selected' : '' %> value=8 >08</option>
+                                <option <%= time_hour === 9 ? 'selected' : '' %> value=9 >09</option>
+                                <option <%= time_hour === 10 ? 'selected' : '' %> value=10 >10</option>
+                                <option <%= time_hour === 11 ? 'selected' : '' %> value=11 >11</option>
+                                <option <%= time_hour === 12 ? 'selected' : '' %> value=12 >12</option>
+                                <option <%= time_hour === 13 ? 'selected' : '' %> value=13 >13</option>
+                                <option <%= time_hour === 14 ? 'selected' : '' %> value=14 >14</option>
+                                <option <%= time_hour === 15 ? 'selected' : '' %> value=15 >15</option>
+                                <option <%= time_hour === 16 ? 'selected' : '' %> value=16 >16</option>
+                                <option <%= time_hour === 17 ? 'selected' : '' %> value=17 >17</option>
+                                <option <%= time_hour === 18 ? 'selected' : '' %> value=18 >18</option>
+                                <option <%= time_hour === 19 ? 'selected' : '' %> value=19 >19</option>
+                                <option <%= time_hour === 20 ? 'selected' : '' %> value=20 >20</option>
+                                <option <%= time_hour === 21 ? 'selected' : '' %> value=21 >21</option>
+                                <option <%= time_hour === 22 ? 'selected' : '' %> value=22 >22</option>
+                                <option <%= time_hour === 23 ? 'selected' : '' %> value=23 >23</option>
+                            </select>:
+                            <select id="time_minutes" name="time_minutes"> 
+                                <option <%= time_minutes === 0 ? 'selected' : '' %> value=0 >00</option>
+                                <option <%= time_minutes === 15 ? 'selected' : '' %> value=15 >15</option>
+                                <option <%= time_minutes === 30 ? 'selected' : '' %> value=30 >30</option>
+                                <option <%= time_minutes === 45 ? 'selected' : '' %> value=45 >45</option>
+                            </select>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="region" class="control-label">Local:</label>
+
+                        <div class="controls">
+                            <input type="text" id="local" name="local" value="<%= local %>"/>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="region" class="control-label">Match Pitch:</label>
+
+                        <div class="controls">
+                            <input type="text" id="localDetail" name="localDetail" value="<%= localDetail %>"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="region" class="control-label">Max Number Players:</label>
+
+                        <div class="controls">
+                            <input type="text" id="maxPlayerNumber" name="maxPlayerNumber" value="<%= maxPlayerNumber %>"/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="region" class="control-label">Price per person:</label>
+
+                        <div class="controls">
+                            <input type="text" id="pricePerPerson" name="pricePerPerson" value="<%= pricePerPerson %>"/>
+                        </div>
+                    </div>
+                    
+
+                    <div class="control-group">
+                        <label for="description" class="control-label">Description:</label>
+
+                        <div class="controls">
+                            <textarea id="description" name="description" style="width: 90%;" rows="6"><%= description
+                                %></textarea>
+                        </div>
+                    </div>
+                    
+                     <div class="control-group">
+                        <label for="Jogadores" class="control-label">Players:</label>
+                     
+                        <div class="controls">
+                            <div id="playerslist" class="control-group">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                
+                <div class="span4">
+                    
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <div id="match-buttons" class="form-actions">
+        </div>
+
+    </form>
+    
+
+</div>
+
+<div class="row-fluid status-bar">
+    <div class="span12">
+        <div class="alert alert-success" style="display: none">
+            <b>Success!</b> Match saved successfully
+        </div>
+    </div>
+</div>
