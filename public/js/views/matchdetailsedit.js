@@ -1,258 +1,191 @@
 window.MatchEdit = Backbone.View.extend({
 
 
-    initialize: function () {
-        this.render();
-    },
+initialize: function () {
 
+this.render();
 
-    render: function () {
-        $(this.el).html(this.template(this.model.toJSON()));
+},
 
-        //Match creation
-        if(window.location.hash=="#matches/add"){
-            $('#match-buttons', this.el).append('<a href="#" class="btn btn-primary create">Create</a>');
-        }
 
+render: function () {
 
-        //Match Edit
+$(this.el).html(this.template(this.model.toJSON()));
 
 
-        else{
+   
 
+//Match creation
+if(window.location.hash=="#matches/add"){
 
-               $('#playerslist', this.el).append('<ul class="thumbnails"></ul>');
+$('#match-buttons', this.el).append('<a href="#" class="btn btn-primary create">Create</a>');
 
+}
 
-                
-                var players = this.model.get('players');
 
+//Match Edit
 
-                var len = players.length;
+else{
 
+   $('#playerslist', this.el).append('<ul class="thumbnails"></ul>');
 
-                var player_index = -1;
 
+var players = this.model.get('players');
 
-                
-                for (var i = 0; i < len; i++)
+var len = players.length;
 
+var player_index = -1;
 
-                    if(players[i]._id == this.options.player.get('_id')){
 
+for (var i = 0; i < len; i++)
 
-                        player_index = i;
+if(players[i]._id == this.options.player.get('_id')){
 
+player_index = i;
 
-                        break;
+break;
 
+}
 
-                    }
 
+console.log(this.model);
 
-        
-            console.log(this.model);
+ 
+if(this.model.get('owner')==this.options.player.get('_id')){
 
+$('#match-buttons', this.el).append('<a href="#" class="btn save">Save</a>');
 
-         
-            if(this.model.get('owner')==this.options.player.get('_id')){
+$('#match-buttons', this.el).append('<a href="#matches/'+ this.model.get('_id') +'" class="btn">Cancel</a>');
 
+$('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
 
-                $('#match-buttons', this.el).append('<a href="#" class="btn save">Save</a>');
+}
 
 
-                $('#match-buttons', this.el).append('<a href="#matches/'+ this.model.get('_id') +'" class="btn">Cancel</a>');
+}
 
+return this;
 
-                $('#match-buttons', this.el).append('<a href="#" class="btn delete">Delete</a>');
+},
 
 
-            }
+events: {
 
+"change": "change",
 
-        
-        }
+"click .save"   : "beforeSave",
 
+"click .create" : "beforeCreate",
 
-        return this;
+"click .delete" : "deleteWine"
 
+},
 
-    },
 
+change: function (event) {
 
-    
-    events: {
+// Remove any existing alert message
 
+utils.hideAlert();
 
-        "change"        : "change",
 
+// Apply the change to the model
 
-        "click .save"   : "beforeSave",
+var target = event.target;
 
+var change = {};
 
-        "click .create" : "beforeCreate",
+change[target.name] = target.value;
 
+this.model.set(change);
 
-        "click .delete" : "deleteWine"
+},
 
 
-    },
+beforeCreate: function () {
 
+this.createMatch();
 
+return false;
 
-    change: function (event) {
+},
 
 
-        // Remove any existing alert message
+createMatch: function () {
 
+console.log('before create');
 
-        utils.hideAlert();
+this.model.save(null, {
 
+success: function (model){
 
+app.navigate('matches/' + model.id, true);
 
-        // Apply the change to the model
+utils.showAlert('Success!', 'Match created successfully', 'alert-success');
 
+},
 
-        var target = event.target;
+error: function () {
 
+utils.showAlert('Error', 'An error occurred while trying to create this item', 'alert-error');
 
-        var change = {};
+}
 
+});
+},
 
-        change[target.name] = target.value;
 
+beforeSave: function () {
 
-        this.model.set(change);
+this.saveMatch();
 
+return false;
 
-    },
+},
 
 
-    
-    beforeCreate: function () {
+saveMatch: function () {
 
+console.log('before edit');
 
-        this.createMatch();
+this.model.save(null, {
 
+success: function (model) {
 
-        return false;
+  //  self.render();
 
+app.navigate('matches/' + model.id, true);
 
-    },
+utils.showAlert('Success!', 'Match saved successfully', 'alert-success');
 
+},
 
-    
-    createMatch: function () {
+error: function () {
 
+utils.showAlert('Error', 'An error occurred while trying to save this item', 'alert-error');
 
-        console.log('before create');
+}
 
+});
+},
 
-        this.model.save(null, {
 
+deleteWine: function () {
 
-            success: function (model){
+this.model.destroy({
 
+success: function () {
 
-                app.navigate('matches/' + model.id, true);
+alert('Wine deleted successfully');
 
+app.navigate('matches', true);
 
-                utils.showAlert('Success!', 'Match created successfully', 'alert-success');
+}
 
+});
+return false;
 
-            },
+}
 
 
-            error: function () {
-
-
-                utils.showAlert('Error', 'An error occurred while trying to create this item', 'alert-error');
-
-
-            }
-
-
-        });
-    },
-
-
-
-    beforeSave: function () {
-
-
-        this.saveMatch();
-
-
-        return false;
-
-
-    },
-
-
-    
-    saveMatch: function () {
-
-
-        console.log('before edit');
-
-
-        this.model.save(null, {
-
-
-            success: function (model) {
-
-
-              //  self.render();
-
-
-                app.navigate('matches/' + model.id, true);
-
-
-                utils.showAlert('Success!', 'Match saved successfully', 'alert-success');
-
-
-            },
-
-
-            error: function () {
-
-
-                utils.showAlert('Error', 'An error occurred while trying to save this item', 'alert-error');
-
-
-            }
-
-
-        });
-    },
-
-
-    
-    deleteWine: function () {
-
-
-        this.model.destroy({
-
-
-            success: function () {
-
-
-                alert('Wine deleted successfully');
-
-
-                app.navigate('matches', true);
-
-
-            }
-
-
-        });
-        return false;
-
-
-    }
-
-
-    
-    
 });
