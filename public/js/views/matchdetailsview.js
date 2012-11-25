@@ -18,6 +18,8 @@ window.MatchView = Backbone.View.extend({
                 player_index = i;
                 break;
             }
+            
+       
         //console.log("Owner Id: "+this.model.get('owner'));
         
         console.log(this.model);
@@ -39,6 +41,18 @@ window.MatchView = Backbone.View.extend({
         
         for (var i = 0; i < len; i++) {
             $('.thumbnails', this.el).append(new PlayerListItemView({model: new Player(players[i])}).render().el);
+        }
+        
+        
+        // render de comments list
+        
+        $('#commentslist', this.el).append('<ul class="comments-box"></ul>');
+        
+        var comments = this.model.get('comments');
+        len = comments.length;
+        
+        for (var i = 0; i < len; i++) {
+            $('.comments-box', this.el).append(new SingleCommentListItemView({model: new Comment(comments[i])}).render().el);
         }
         
         return this;

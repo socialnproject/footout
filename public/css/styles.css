@@ -58,6 +58,27 @@ h5 {
     margin-right: 20px !important;
 }
 
+.comment-box {
+    float:left;
+    width:300px;
+}
+
+.comment-box li {
+     margin-left: 0px !important;
+    margin-right: 20px !important;
+}
+
+.comment-photo {
+    float:left;
+}
+
+.comment-text {
+    float:left;
+    margin-left:10px;
+}
+
+
+
 legend {
     font-family: 'Andika';
 }

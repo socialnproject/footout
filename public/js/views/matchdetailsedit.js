@@ -77,7 +77,7 @@ events: {
 
 "click .create" : "beforeCreate",
 
-"click .delete" : "deleteWine"
+"click .delete" : "deleteMatches"
 
 },
 
@@ -170,7 +170,7 @@ utils.showAlert('Error', 'An error occurred while trying to save this item', 'al
 },
 
 
-deleteWine: function () {
+deleteMatches: function () {
 
 this.model.destroy({
 
