@@ -15,7 +15,8 @@ var Match = new Schema( {
     owner:              {type: String, required:true},
     players:            [Player],
     lastUpdate:         {type: Date, default: Date.now},
-    creation:           {type: Date, required:true}
+    creation:           {type: Date, required:true},
+    conversation:       [Comment]
 });
 
 
