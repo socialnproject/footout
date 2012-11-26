@@ -1,8 +1,6 @@
 var mongoose =  require('mongoose');
 var Schema = mongoose.Schema;
 
-//mongoose.connect('mongodb://localhost:27017/futdb');
-
 mongoose.connect('mongodb://foot:murro@alex.mongohq.com:10058/footout');
 
 
@@ -44,13 +42,26 @@ exports.findById = function(req, res) {
 };
 
 exports.findAll = function(req, res) { 
-   MatchModel.find(function (err, matches){       
-        if(!err){
-            res.send(matches);
-        }
-        else {
-            console.log(err);
-        } 
+    /*
+    sers.find({ some-criteria }, array_of_field_names)
+.sort('sort_field_name', -1) // DESC order
+.execFind( function(err, users) {... });*/
+
+
+   MatchModel.find({}, null, {sort: {name: 1}},
+                    /*['name','date','local','localDetail','maxPlayerNumber','pricePerPerson','description','owner','players','lastUpdate','creation','_v','_id'], // Columns to Return
+                    {
+                        skip:0, // Starting Row
+                        limit:5, // Ending Row
+                        sort:{}
+                    },*/
+                    function (err, matches){       
+                            if(!err){
+                                res.send(matches);
+                            }
+                            else {
+                                console.log(err);
+                            } 
     });
 };
 
