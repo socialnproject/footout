@@ -15,8 +15,7 @@ var Match = new Schema( {
     owner:              {type: String, required:true},
     players:            [Player],
     lastUpdate:         {type: Date, default: Date.now},
-    creation:           {type: Date, required:true},
-    conversation:       [Comment]
+    creation:           {type: Date, required:true}
 });
 
 
@@ -27,12 +26,12 @@ var Player = new Schema({
     email: {type: String}
 });
 
+
 var Comment = new Schema({
     author: {type: String},
     fbid: {type: String},
     text: {type: String}
 });
-
 
 var MatchModel = mongoose.model('Match', Match);
 var PlayerModel = mongoose.model('Player', Player);
@@ -56,8 +55,13 @@ exports.findAll = function(req, res) {
 .execFind( function(err, users) {... });*/
 
 
-   MatchModel.find({}, null, {sort: {name: 1}},
-                    /*['name','date','local','localDetail','maxPlayerNumber','pricePerPerson','description','owner','players','lastUpdate','creation','_v','_id'], // Columns to Return
+   MatchModel.find({},
+                    null,//['name','date','local','localDetail','maxPlayerNumber','pricePerPerson','description','owner','players','lastUpdate','creation','__v','_id'], // Columns to Return
+                    {    
+                    //skip:1, // Starting Row
+                    //limit:5, // Ending Row
+                    sort: {name: 1}
+                    },/*
                     {
                         skip:0, // Starting Row
                         limit:5, // Ending Row
