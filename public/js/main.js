@@ -112,7 +112,7 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-utils.loadTemplate(['HomeView','HeaderView', 'MatchView', 'MatchEdit','PlayerListItemView',
+utils.loadTemplate(['HomeView','HeaderView', 'MatchView', 'MatchEdit','PlayerListItemView','SingleCommentListItemView',
 		    'AboutView', 'MatchListItemView'], function() {
     app = new AppRouter();
     Backbone.history.start();

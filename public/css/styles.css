@@ -58,14 +58,22 @@ h5 {
     margin-right: 20px !important;
 }
 
-.comment-box {
+.commentdiv {
     float:left;
+    margin-top:10px;
+    margin-bottom:10px;
     width:300px;
 }
 
-.comment-box li {
-     margin-left: 0px !important;
-    margin-right: 20px !important;
+.commentsbox{
+    float:left;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.commentsbox li {
+
 }
 
 .comment-photo {
@@ -74,7 +82,8 @@ h5 {
 
 .comment-text {
     float:left;
-    margin-left:10px;
+    padding-top: 5px;
+    margin-left:20px;
 }
 
 

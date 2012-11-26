@@ -46,13 +46,14 @@ window.MatchView = Backbone.View.extend({
         
         // render de comments list
         
-        $('#commentslist', this.el).append('<ul class="comments-box"></ul>');
+        $('#commentslist', this.el).append('<ul class="commentsbox"></ul>');
         
-        var comments = this.model.get('comments');
+        var comments = this.model.get('conversation');
         len = comments.length;
-        
+          
         for (var i = 0; i < len; i++) {
-            $('.comments-box', this.el).append(new SingleCommentListItemView({model: new Comment(comments[i])}).render().el);
+            var c =  new Comment(comments[i]);
+            $('.commentsbox', this.el).append(new SingleCommentListItemView({model: c}).render().el);
         }
         
         return this;
@@ -62,7 +63,8 @@ window.MatchView = Backbone.View.extend({
         "change"        : "change",
         "click .edit"   : "beforeEdit",
         "click .join"   : "beforeJoin",
-        "click .leave"  : "beforeLeave"
+        "click .leave"  : "beforeLeave",
+        "click .addComment" : "beforeComment"
     },
 
     change: function (event) {
@@ -74,6 +76,36 @@ window.MatchView = Backbone.View.extend({
         var change = {};
         change[target.name] = target.value;
         this.model.set(change);
+    },
+    
+    beforeComment: function () {
+        console.log('before comment');
+        var self = this;
+        this.createComment();
+        return false;
+    },
+    
+    createComment: function(){
+      var self = this;
+      var newMsg = new Comment();
+      
+      newMsg.set('author', this.options.player.get('_id'));
+      newMsg.set('fbid', this.options.player.get('fbid'));
+      newMsg.set('text', $('#newcomment').val());
+      
+      this.model.addComment(newMsg);
+      
+      this.model.save(null, {
+            success: function (model) {
+                self.render();
+                app.navigate('matches/' + model.id, false);
+                utils.showAlert('Success!', 'Comment Added successfully', 'alert-success');
+            },
+            error: function () {
+                utils.showAlert('Error', 'An error occurred while trying to delete this item', 'alert-error');
+            }
+        });
+      
     },
 
     beforeEdit: function () {
@@ -143,10 +175,30 @@ window.MatchView = Backbone.View.extend({
         });
     }
     
+    
+    
+    
 });
 
 
 window.PlayerListItemView = Backbone.View.extend({
+
+    tagName: "li",
+
+    initialize: function () {
+        this.model.bind("change", this.render, this);
+        this.model.bind("destroy", this.close, this);
+    },
+
+    render: function () {
+        $(this.el).html(this.template(this.model.toJSON()));
+        return this;
+    }
+
+});
+
+
+window.SingleCommentListItemView = Backbone.View.extend({
 
     tagName: "li",
 

@@ -30,8 +30,8 @@ var Player = new Schema({
 });
 
 var Comment = new Schema({
-    authorId: {type: String},
-    authorFbid: {type: String},
+    author: {type: String},
+    fbid: {type: String},
     text: {type: String}
 });
 
@@ -99,7 +99,7 @@ exports.updateMatch = function(req, res) {
         match.maxPlayerNumber = req.body.maxPlayerNumber; 
         match.description =     req.body.description;
         match.players =         req.body.players;
-        
+        match.conversation =    req.body.conversation;
         
         match.save(function(err){
             if(!err){

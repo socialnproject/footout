@@ -6,6 +6,7 @@ window.Match = Backbone.Model.extend({
 
     initialize: function () {
       this.set('players', []);
+      this.set('conversation', []);
     },
 
     defaults: {
@@ -24,7 +25,8 @@ window.Match = Backbone.Model.extend({
         maxPlayerNumber: "10",
         description: "",
         pricePerPerson: "10,00",
-        players: false
+        players: false,
+        conversation: false
     }
 
     ,
@@ -55,6 +57,16 @@ window.Match = Backbone.Model.extend({
             this.trigger("change:players", this, players);
       //  }
         
+    },
+    
+    
+    addComment: function(comment){
+        
+        var comments = this.get('conversation');
+
+        comments.push(comment);
+        this.trigger("change:conversation", this, comments);
+
     }
     
 });
@@ -64,5 +76,19 @@ window.MatchCollection = Backbone.Collection.extend({
     model: Match,
 
     url: "/matches"
+
+});
+
+window.Comment = Backbone.Model.extend({
+
+    initialize: function () {
+    },
+    
+     defaults: {
+        _id: null,
+        text: "",
+        author: "",
+        fbid: ""
+    }
 
 });
