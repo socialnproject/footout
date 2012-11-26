@@ -15,7 +15,8 @@ var Match = new Schema( {
     owner:              {type: String, required:true},
     players:            [Player],
     lastUpdate:         {type: Date, default: Date.now},
-    creation:           {type: Date, required:true}
+    creation:           {type: Date, required:true},
+    conversation:       [Comment]
 });
 
 
@@ -26,9 +27,16 @@ var Player = new Schema({
     email: {type: String}
 });
 
+var Comment = new Schema({
+    authorId: {type: String},
+    authorFbid: {type: String},
+    text: {type: String}
+});
+
 
 var MatchModel = mongoose.model('Match', Match);
 var PlayerModel = mongoose.model('Player', Player);
+var CommentModel = mongoose.model('Comment', Comment);
 
 exports.findById = function(req, res) {
     MatchModel.findById(req.params.id, function (err, match){       
